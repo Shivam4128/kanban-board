@@ -1,14 +1,100 @@
-#root {
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
 }
 
-.card {
-  padding: 2em;
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
+label {
+  font-size: 18px;
+  margin-right: 10px;
+  color: #555;
+}
+
+select {
+  font-size: 16px;
+  padding: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.group-container {
+  margin-top: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.group-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 5px 0;
+  color: #555;
+}
+
+.task-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.task {
+  margin: 10px 0;
+  padding: 15px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Colors for task statuses */
+.task[data-status="To Do"] {
+  border-left: 4px solid #3498db;
+}
+
+.task[data-status="In Progress"] {
+  border-left: 4px solid #f39c12;
+}
+
+.task[data-status="Done"] {
+  border-left: 4px solid #2ecc71;
+}
+
+/* Colors for task priorities */
+.task[data-priority="High"] {
+  border-color: #e74c3c;
+  background-color: #f9c9ba;
+}
+
+.task[data-priority="Medium"] {
+  border-color: #f1c40f;
+  background-color: #f9f4b2;
+}
+
+.task[data-priority="Low"] {
+  border-color: #2ecc71;
+  background-color: #c4f2d0;
+}
+
+/* Hover effect */
+.task:hover {
+  background-color: #f0f0f0;
 }
