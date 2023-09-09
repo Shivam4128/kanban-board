@@ -3,9 +3,25 @@ import axios from 'axios';
 
 function KanbanBoard() {
     const [tickets, setTickets] = useState([]);
+    const [users, setUsers] = useState([]);
     const [groupingOption, setGroupingOption] = useState('status');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const getPriorityLevel = (priorityLevel) => {
+        switch (priorityLevel) {
+            case 4:
+                return "Urgent";
+            case 3:
+                return "High";
+            case 2:
+                return "Medium";
+            case 1:
+                return "Low";
+            default:
+                return "No priority";
+        }
+    };
 
     useEffect(() => {
         // In a real application, replace this with your API call
@@ -15,6 +31,7 @@ function KanbanBoard() {
                     'https://api.quicksell.co/v1/internal/frontend-assignment'
                 );
                 setTickets(response.data.tickets);
+                setUsers(response.data.users);
                 setLoading(false);
             } catch (error) {
                 setError(error);
@@ -33,6 +50,11 @@ function KanbanBoard() {
             if (!groupedTickets[groupKey]) {
                 groupedTickets[groupKey] = [];
             }
+            const user = users.find((user) => user.id === ticket.userId);
+            if (user) {
+                ticket.userName = user.name;
+            }
+            ticket.priorityLevel = getPriorityLevel(ticket.priority);
             groupedTickets[groupKey].push(ticket);
         });
 
@@ -40,6 +62,26 @@ function KanbanBoard() {
     };
 
     const groupedTickets = groupTickets();
+    let sortedGroupKeys;
+
+    if (groupingOption === 'priorityLevel') {
+        const priorityOrder = {
+            "Urgent": 4,
+            "High": 3,
+            "Medium": 2,
+            "Low": 1,
+            "No priority": 0,
+        };
+        sortedGroupKeys = Object.keys(groupedTickets).sort((a, b) => {
+            const priorityA = priorityOrder[a] || 0;
+            const priorityB = priorityOrder[b] || 0;
+            return priorityB - priorityA;
+        });
+    } else {
+        sortedGroupKeys = Object.keys(groupedTickets).sort((a, b) => {
+            return a.localeCompare(b);
+        });
+    }
 
     if (loading) {
         return <div>Loading...</div>;
@@ -59,8 +101,9 @@ function KanbanBoard() {
                     onChange={(e) => setGroupingOption(e.target.value)}
                 >
                     <option value="status">Status</option>
-                    <option value="priority">Priority</option>
-                    {/* Add more grouping options here */}
+                    <option value="priorityLevel">Priority</option>
+                    <option value="userName">User</option>
+                    <option value="title">Title</option>
                 </select>
             </label>
             {Object.keys(groupedTickets).map((groupKey) => (
